@@ -1,0 +1,23 @@
+#hyrit-container {
+  width: 100%;
+  height: 100%;
+  font-family: monospace;
+}
+
+#hyrit-container > canvas {
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+hyrit-info-panel {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  white-space: pre;
+}
