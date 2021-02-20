@@ -44,12 +44,12 @@ export default class Cell extends EntityBase {
       ...args,
     });
 
-    const nameWordsCount = Math.ceil(Math.random() * Math.random() * 5);
+    const nameWordsCount = Math.ceil(Math.random() * Math.random() * 4);
 
     this.name = petname(nameWordsCount);
     this.scope = this.radius * 5;
     this.huntingBoredoomCap = Math.round(500 + 1500 * this.dna.huntingBoredoomCap);
-    this.massNeededToReproduce = 200 + 300 * this.dna.massToNeededReproduce ** 2;
+    this.massNeededToReproduce = 800 + 200 * this.dna.massToNeededReproduce ** 2;
     this.updateWanderingController();
 
   }

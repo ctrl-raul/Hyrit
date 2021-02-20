@@ -9,18 +9,18 @@ const hyrit = window.hyrit = new Hyrit({
 
   container: document.body,
   rngFunction: Math.random,
-  worldRadius: 3000,
+  worldRadius: 6000,
 
   entityModels: [
     {
       EntityClass: Cell,
       initialCount: 0,
-      spawnEveryXFrame: 10,
+      spawnEveryXFrame: 15,
     },
     {
       EntityClass: Protein,
       initialCount: 0,
-      spawnEveryXFrame: 10,
+      spawnEveryXFrame: 5,
     }
   ],
 
