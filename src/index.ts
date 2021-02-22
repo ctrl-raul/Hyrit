@@ -14,12 +14,12 @@ const hyrit = window.hyrit = new Hyrit({
   entityModels: [
     {
       EntityClass: Cell,
-      initialCount: 1000,
+      initialCount: 50,
       spawnEveryXFrame: 15,
     },
     {
       EntityClass: Protein,
-      initialCount: 0,
+      initialCount: 200,
       spawnEveryXFrame: 5,
     }
   ],
