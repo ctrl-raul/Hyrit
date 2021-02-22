@@ -192,6 +192,10 @@ export default class CanvasRenderer {
   }
 
   private initZooming (): void {
+
+    const minZoom = 0.1;
+    const maxZoom = 3;
+
     addCrossBrowserWheelEventListener(this.canvas, (e, delta) => {
 
       e.preventDefault();
@@ -200,19 +204,20 @@ export default class CanvasRenderer {
 
       const oldZoom = this.config.zoom;
       const scale = 1 + 0.15 * -delta;
+      const newZoom = Math.max(minZoom, Math.min(maxZoom, this.config.zoom * scale));
 
-      this.config.zoom = Math.max(0.1, Math.min(3, this.config.zoom * scale));
+      this.config.zoom = newZoom;
 
-      if (this.hyrit.focusedEntity === null) {
+      if (this.hyrit.focusedEntity === null && newZoom > minZoom && newZoom < maxZoom) {
 
         const centerX = window.innerWidth  / 2;
         const centerY = window.innerHeight / 2;
         const mouseX = e.clientX - this.canvas.offsetLeft;
         const mouseY = e.clientY - this.canvas.offsetTop;
-        const zoomDifference = oldZoom - this.config.zoom;
+        const zoomDifference = oldZoom - newZoom;
 
-        this.config.camera.x += Math.round((centerX - mouseX - zoomDifference) * 0.15 / this.config.zoom * delta);
-        this.config.camera.y += Math.round((centerY - mouseY - zoomDifference) * 0.15 / this.config.zoom * delta);
+        this.config.camera.x += Math.round((centerX - mouseX - zoomDifference) * 0.15 / newZoom * delta);
+        this.config.camera.y += Math.round((centerY - mouseY - zoomDifference) * 0.15 / newZoom * delta);
 
       }
 
