@@ -1,3 +1,6 @@
+import mulberry32 from "../utils/mulberry32";
+
+
 export class HyritDNA {
   speed = 0;
   huntingBoredoomCap = 0;
@@ -29,12 +32,12 @@ function create (from?: HyritDNA): HyritDNA {
 
   while (genePoints > 0) {
 
-    const randomGeneNameIndex = Math.floor(Math.random() * nonMaxedGeneNames.length);
+    const randomGeneNameIndex = Math.floor(mulberry32.random() * nonMaxedGeneNames.length);
     const randomGeneName = nonMaxedGeneNames[randomGeneNameIndex];
 
     const genePointsToAdd = Math.min(
       // Faster and less balanced than adding 1 by 1
-      Math.ceil(Math.random() * maxPointsPerGene / 6),
+      Math.ceil(mulberry32.random() * maxPointsPerGene / 6),
       // Makes sure it won't make it go over the max
       maxPointsPerGene - dna[randomGeneName],
       // Makes sure it won't give more points than remaining

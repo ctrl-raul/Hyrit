@@ -3,11 +3,9 @@ import EntityBase from './classes/EntityBase';
 import Entity from './classes/EntityBase';
 import Engine from './Engine';
 import circleCollision from './utils/circleCollision';
+import mulberry32 from './utils/mulberry32';
 import Timer from './utils/Timer';
 import Vector2 from './utils/Vector2';
-
-
-type RNGFunction = () => number;
 
 
 export interface EntityModel <T extends typeof Entity = any> {
@@ -33,6 +31,7 @@ export default class Hyrit {
   renderTimer = new Timer();
 
   info = {
+    seed: NaN,
     frame: 0,
     msPerRender: 0,
     msPerUpdate: 0,
@@ -40,19 +39,23 @@ export default class Hyrit {
   };
 
   constructor (config: {
+    seed: number;
     container: HTMLElement;
-    rngFunction: RNGFunction;
     worldRadius: number,
     entityModels: EntityModel[];
   }) {
 
     const {
+      seed = 1,
       container,
       worldRadius,
       entityModels,
       // rngFunction, TODO
     } = config;
 
+    this.info.seed = seed;
+    mulberry32.setSeed(seed);
+    
     this.container = container;
     this.worldRadius = worldRadius;
 
@@ -121,6 +124,7 @@ export default class Hyrit {
 
     const infoLines = [
       '- general -',
+      `seed: ${this.info.seed}`,
       `entities: ${entities.length} (${this.renderer.cache.visibleEntitiesCount} visible)`,
       `total mass: ${Math.round(this.info.totalMass)}`,
       `ms per update: ${this.info.msPerUpdate.toFixed(3)}`,
@@ -166,7 +170,7 @@ export default class Hyrit {
       this.entitiesMap[type] = Array(model.initialCount).fill(null).map(() => {
         return new model.EntityClass({
           pos: Vector2.randomPointInCircle(this.worldRadius),
-          // age: Math.round(Math.random() * 1000),
+          age: Math.round(mulberry32.random() * 1000),
         });
       });
     }

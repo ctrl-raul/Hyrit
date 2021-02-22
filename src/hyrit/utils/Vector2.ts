@@ -1,3 +1,5 @@
+import mulberry32 from './mulberry32';
+
 export default class Vector2 {
 
   static new (x: number = 0, y: number = 0): Vector2 {
@@ -6,7 +8,7 @@ export default class Vector2 {
 
   static randomDirection () {
 
-    const theta = Math.random() * Math.PI * 2;
+    const theta = mulberry32.random() * Math.PI * 2;
 
     return new this(
       Math.cos(theta),
@@ -17,8 +19,8 @@ export default class Vector2 {
 
   static randomPointInCircle (radius: number) {
 
-    const theta = 2 * Math.PI * Math.random();
-    const u = Math.random() + Math.random();
+    const theta = 2 * Math.PI * mulberry32.random();
+    const u = mulberry32.random() + mulberry32.random();
     const r = u > 1 ? 2 - u : u;
 
     return new this(

@@ -1,20 +1,20 @@
 import Hyrit from './hyrit/hyrit';
 
-import Cell from './entityModels/cell';
-import Protein from './entityModels/protein';
+import Cell from './hyrit/entityModels/cell';
+import Protein from './hyrit/entityModels/protein';
 
 
 // @ts-ignore
 const hyrit = window.hyrit = new Hyrit({
 
+  seed: Math.round(Math.random() * 1000000),
   container: document.body,
-  rngFunction: Math.random,
-  worldRadius: 6000,
+  worldRadius: 5000,
 
   entityModels: [
     {
       EntityClass: Cell,
-      initialCount: 0,
+      initialCount: 1000,
       spawnEveryXFrame: 15,
     },
     {

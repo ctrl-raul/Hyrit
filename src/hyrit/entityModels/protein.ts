@@ -1,4 +1,5 @@
-import EntityBase from '../hyrit/classes/EntityBase';
+import mulberry32 from '../utils/mulberry32';
+import EntityBase from '../classes/EntityBase';
 
 
 export default class Protein extends EntityBase {
@@ -8,14 +9,14 @@ export default class Protein extends EntityBase {
   type = Protein.type;
 
   rotation = {
-    currentRadii: Math.random() * Math.PI * 2,
-    multiplier: Math.random() > 0.5 ? 1 : -1,
-    speed: 0.1 * Math.random(),
+    currentRadii: mulberry32.random() * Math.PI * 2,
+    multiplier: mulberry32.random() > 0.5 ? 1 : -1,
+    speed: 0.1 * mulberry32.random(),
   };
 
   constructor (args: ConstructorParameters<typeof EntityBase>[0]) {
     super({
-      mass: Math.ceil(Math.random() * 10),
+      mass: Math.ceil(mulberry32.random() * 10),
       ...args
     });
   }

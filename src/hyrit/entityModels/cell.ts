@@ -1,9 +1,10 @@
-import DNAFactory from '../hyrit/classes/DNAFactory';
-import circleCollision from '../hyrit/utils/circleCollision';
-import Vector2 from '../hyrit/utils/Vector2';
-import EntityBase from '../hyrit/classes/EntityBase';
-import drawArrow from '../hyrit/utils/drawArrow';
-import petname from 'node-petname';
+import DNAFactory from '../classes/DNAFactory';
+import circleCollision from '../utils/circleCollision';
+import Vector2 from '../utils/Vector2';
+import EntityBase from '../classes/EntityBase';
+import drawArrow from '../utils/drawArrow';
+import petname from '../node-petname/node-petname';
+import mulberry32 from '../utils/mulberry32';
 
 
 export default class Cell extends EntityBase {
@@ -29,7 +30,7 @@ export default class Cell extends EntityBase {
 
   wanderingDirRotation: number;
   wanderingDirDistance: number;
-  wanderingDirRadii = Math.random() * Math.PI * 2;
+  wanderingDirRadii = mulberry32.random() * Math.PI * 2;
 
   targetedEntity = null as EntityBase | null;
   targetedPosition = Vector2.new();
@@ -40,11 +41,11 @@ export default class Cell extends EntityBase {
   constructor (args: ConstructorParameters<typeof EntityBase>[0]) {
 
     super({
-      mass: args.mass || 25 + Math.round(Math.random() * 25),
+      mass: args.mass || 25 + Math.round(mulberry32.random() * 25),
       ...args,
     });
 
-    const nameWordsCount = Math.ceil(Math.random() * Math.random() * 4);
+    const nameWordsCount = Math.ceil(Math.pow(mulberry32.random(), 3) * 4);
 
     this.name = petname(nameWordsCount);
     this.scope = this.radius * 5;
@@ -62,6 +63,7 @@ export default class Cell extends EntityBase {
     this.updateStats();
     this.manageTarget(config.entitiesMap, config.worldRadius);
     this.move();
+    this.decay();
   }
 
   public draw (ctx: CanvasRenderingContext2D) {
@@ -220,11 +222,11 @@ export default class Cell extends EntityBase {
     );
   }
 
-  private updateWanderingController () {
+  private updateWanderingController (): void {
 
     if (this.age % 130 === 0) {
-      this.wandering.distance = 50 + Math.random() * 450;
-      this.wandering.rotation = (Math.random() - 0.5) * 0.025;
+      this.wandering.distance = 50 + mulberry32.random() * 450;
+      this.wandering.rotation = (mulberry32.random() - 0.5) * 0.025;
     }
 
     const radii = this.wandering.rotation + (
@@ -244,7 +246,7 @@ export default class Cell extends EntityBase {
     const radii = Math.atan2(-this.pos.y, -this.pos.x);
     const limitA = radii - Math.PI / 2;
     const limitB = radii + Math.PI / 2;
-    return Math.random() * (limitB - limitA) + limitA;
+    return mulberry32.random() * (limitB - limitA) + limitA;
   }
 
   private canTargetEntity (entity: EntityBase): boolean {
@@ -267,7 +269,7 @@ export default class Cell extends EntityBase {
 
   }
 
-  public updateStats () {
+  public updateStats (): void {
     this.scope = this.radius * 5;
   }
 
@@ -291,8 +293,8 @@ export default class Cell extends EntityBase {
           mass: this.mass,
           color: this.color,
           pos: Vector2.new(
-            this.pos.x + Math.random(),
-            this.pos.y + Math.random(),
+            this.pos.x + mulberry32.random(),
+            this.pos.y + mulberry32.random(),
           ),
           dna: DNAFactory.create(this.dna),
           // stamina: this.stamina
@@ -309,6 +311,11 @@ export default class Cell extends EntityBase {
       `name: ${this.name}`,
       `hunting boredoom: ${this.huntingBoredoomClock}/${this.huntingBoredoomCap}`,
     ];
+  }
+
+  private decay (): void {
+    // this.stamina--;
+    this.mass *= 0.9994 + this.dna.decayEfficiency / 2000;
   }
 
 }
