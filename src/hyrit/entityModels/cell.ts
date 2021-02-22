@@ -45,7 +45,7 @@ export default class Cell extends EntityBase {
       ...args,
     });
 
-    const nameWordsCount = Math.ceil(Math.pow(mulberry32.random(), 3) * 4);
+    const nameWordsCount = Math.ceil(Math.pow(mulberry32.random(), 4) * 4);
 
     this.name = petname(nameWordsCount);
     this.scope = this.radius * 5;
